@@ -48,7 +48,6 @@ android {
         }
     }
 }
-
 dependencies {
 
     // 최신 AppCompat 라이브러리
@@ -60,6 +59,7 @@ dependencies {
     implementation ("androidx.core:core-ktx:1.7.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
+    implementation ("com.github.chrisbanes:PhotoView:2.3.0")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
