@@ -22,4 +22,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "TrackMaster"
 include(":app")
- 

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="splashImage" type="id" />
+    <item name="startStationInput" type="id" />
+    <item name="minTransferButton" type="id" />
+    <item name="minTimeButton" type="id" />
+    <item name="minCostButton" type="id" />
+    <item name="resultLayout" type="id" />
+    <item name="endStationInput" type="id" />
+    <item name="calculateButton" type="id" />
+    <item name="amenityIcon" type="id" />
+    <item name="amenityText" type="id" />
+    <item name="searchStationInput" type="id" />
+    <item name="searchNearbyButton" type="id" />
+    <item name="stationInfoTextView" type="id" />
+    <item name="amenitiesRecyclerView" type="id" />
+</resources>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <drawable name="ic_placeholder" />
+    <drawable name="search_background" />
+    <drawable name="ic_search" />
+</resources>
