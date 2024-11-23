@@ -1,0 +1,49 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/white"
+    android:gravity="center_horizontal">
+
+    <!-- 확대 가능한 지하철 노선도 -->
+    <com.github.chrisbanes.photoview.PhotoView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:scaleType="fitCenter"
+        android:src="@drawable/subwayroutemap" />
+
+    <!-- 검색 입력 필드 -->
+    <EditText
+        android:id="@+id/startStationInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="출발역 입력"
+        android:inputType="text"
+        android:layout_marginBottom="8dp" />
+
+    <EditText
+        android:id="@+id/endStationInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="도착역 입력"
+        android:inputType="text"
+        android:layout_marginBottom="16dp" />
+
+    <!-- 경로 검색 버튼 -->
+    <Button
+        android:id="@+id/calculateButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#344485"
+        android:text="경로 검색"
+        android:textColor="#FFFFFF" />
+</LinearLayout>
+
+
+
+
+
+

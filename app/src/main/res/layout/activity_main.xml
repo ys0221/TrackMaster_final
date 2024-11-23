@@ -1,0 +1,89 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/white"
+    android:gravity="center_horizontal">
+
+    <!-- 상단 버튼 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="16dp">
+
+        <Button
+            android:id="@+id/minTransferButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:text="최소환승" />
+
+        <Button
+            android:id="@+id/minTimeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:text="최소시간" />
+
+        <Button
+            android:id="@+id/minCostButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:text="최소비용" />
+    </LinearLayout>
+
+    <!-- 검색 입력 필드 -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <LinearLayout
+            android:id="@+id/resultLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical" />
+    </ScrollView>
+
+    <Button
+    android:id="@+id/nearbyButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+        android:layout_gravity="end"
+    android:backgroundTint="#2C2C2C"
+    android:text="주변"
+    android:textColor="#FFFFFF" />
+
+    <EditText
+        android:id="@+id/startStationInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="출발역 입력"
+        android:inputType="text"
+        android:layout_marginBottom="8dp" />
+
+    <EditText
+        android:id="@+id/endStationInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="도착역 입력"
+        android:inputType="text"
+        android:layout_marginBottom="16dp" />
+
+    <!-- 경로 검색 버튼 -->
+    <Button
+        android:id="@+id/calculateButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="#344485"
+        android:text="경로 검색"
+        android:textColor="#FFFFFF" />
+
+</LinearLayout>

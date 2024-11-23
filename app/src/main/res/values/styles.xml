@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Base application theme -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- 스플래시 이미지 설정 -->
+        <item name="android:windowBackground">@drawable/splash</item>
+
+    </style>
+
+
+</resources>
