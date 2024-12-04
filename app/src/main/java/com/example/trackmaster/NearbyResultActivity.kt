@@ -1,4 +1,4 @@
-package com.example.trackmaster1119
+package com.example.trackmaster
 
 import android.os.Bundle
 import android.widget.Button
@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.core.widget.addTextChangedListener
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
@@ -44,8 +45,14 @@ class NearbySearchActivity : AppCompatActivity() {
                 searchAmenitiesForStation(stationNumber)
             } else {
                 // 검색창이 비어 있을 때 처리
+                searchStationInput.error = "역 번호를 입력하세요."
                 clearAmenitiesList()
             }
+        }
+
+        // 입력 이벤트 처리로 오류 초기화
+        searchStationInput.addTextChangedListener {
+            searchStationInput.error = null
         }
     }
 
@@ -56,9 +63,15 @@ class NearbySearchActivity : AppCompatActivity() {
         adapter.notifyDataSetChanged()
 
         if (newAmenitiesList.isEmpty()) {
-            stationInfoTextView.text = "${stationNumber}에 대한 데이터를 찾을 수 없습니다."
+            // EditText의 setError로 오류 메시지 표시
+            val searchStationInput = findViewById<EditText>(R.id.searchStationInput)
+            searchStationInput.error = "역 이름이 올바르지 않습니다."
             amenitiesRecyclerView.visibility = RecyclerView.GONE
         } else {
+            // 오류 메시지 초기화
+            val searchStationInput = findViewById<EditText>(R.id.searchStationInput)
+            searchStationInput.error = null
+
             stationInfoTextView.text = "${stationNumber}의 주변 편의시설 목록"
             amenitiesRecyclerView.visibility = RecyclerView.VISIBLE
         }
@@ -139,3 +152,8 @@ class NearbySearchActivity : AppCompatActivity() {
         override fun getItemCount(): Int = amenities.size
     }
 }
+
+
+
+
+

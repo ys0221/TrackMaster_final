@@ -1,3 +1,5 @@
+package com.example.trackmaster
+
 import android.content.Context
 import android.graphics.Color
 import android.widget.LinearLayout

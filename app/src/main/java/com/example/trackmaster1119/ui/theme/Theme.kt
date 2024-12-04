@@ -1,4 +1,4 @@
-package com.example.trackmaster1119.ui.theme
+package com.example.trackmaster.ui.theme
 
 import android.app.Activity
 import android.os.Build

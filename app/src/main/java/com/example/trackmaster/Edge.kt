@@ -1,4 +1,4 @@
-package com.example.trackmaster1119
+package com.example.trackmaster
 
 data class Edge(
     val destination: String,

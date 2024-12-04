@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.trackmaster1119"
+    namespace = "com.example.trackmaster"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.trackmaster1119"
+        applicationId = "com.example.trackmaster"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

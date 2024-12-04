@@ -1,4 +1,4 @@
-package com.example.trackmaster1119
+package com.example.trackmaster
 
 data class StationData(
     val 출발역: String,
