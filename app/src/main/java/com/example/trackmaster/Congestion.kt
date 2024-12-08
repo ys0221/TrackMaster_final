@@ -1,9 +1,16 @@
 package com.example.trackmaster
 
-import kotlin.random.Random
 
+import android.content.Context
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import kotlin.random.Random
 class Congestion {
-    fun calculateCongestion(path: Path, cache: MutableMap<String, Int>): List<String> {
+    fun calculateCongestion(
+        path: Path,
+        cache: MutableMap<String, Int>
+    ): Map<String, String> {
         val lineCongestions = mutableMapOf<String, MutableList<Int>>()
 
         path.route.forEachIndexed { index, station ->
@@ -36,30 +43,15 @@ class Congestion {
             lineCongestions.computeIfAbsent(lastLine) { mutableListOf() }.add(lastCongestion)
         }
 
-        // 호선 번호 기준으로 정렬 후 평균 계산
-        return lineCongestions.entries
-            .sortedBy { it.key.toInt() } // 호선 번호로 정렬
-            .map { entry ->
-                val averageCongestion = entry.value.average().toInt()
-                val status = when {
-                    averageCongestion > 70 -> "혼잡"
-                    averageCongestion in 30..70 -> "보통"
-                    else -> "쾌적"
-                }
-                "${entry.key}호선 평균 혼잡도: $averageCongestion% ($status)"
+        // 혼잡도 상태 반환
+        return lineCongestions.entries.associate { entry ->
+            val averageCongestion = entry.value.average().toInt()
+            val status = when {
+                averageCongestion > 70 -> "혼잡"
+                averageCongestion in 30..70 -> "보통"
+                else -> "쾌적"
             }
+            entry.key to status
+        }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

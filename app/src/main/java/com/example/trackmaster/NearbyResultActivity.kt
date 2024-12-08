@@ -36,6 +36,7 @@ class NearbySearchActivity : AppCompatActivity() {
         amenitiesRecyclerView.visibility = RecyclerView.GONE
         stationInfoTextView.text = "역 번호를 입력하세요."
 
+
         // 검색 버튼 클릭 리스너
         searchNearbyButton.setOnClickListener {
             val stationNumber = searchStationInput.text.toString().trim()
@@ -140,12 +141,137 @@ class NearbySearchActivity : AppCompatActivity() {
             val amenity = amenities[position]
             holder.text.text = "${amenity.name}\n거리: ${amenity.distance}m"
 
+            // 이름별 아이콘 설정
             val iconRes = when (amenity.type) {
                 "화장실" -> R.drawable.ic_restroom
-                "편의점" -> R.drawable.ic_convenience_store
-                "식당" -> R.drawable.ic_restaurant
-                else -> 0
+                "편의점" -> when (amenity.name) {
+                    "GS25" -> R.drawable.ic_gs25
+                    "CU" -> R.drawable.ic_cu
+                    "세븐일레븐" -> R.drawable.ic_7eleven
+                    "이마트24" -> R.drawable.ic_emart24
+                    else -> R.drawable.ic_convenience_store
+                }
+                "식당" -> when (amenity.name) {
+                    "아레나" -> R.drawable.ic_101
+                    "김밥천국" -> R.drawable.ic_102
+                    "역전할머니맥주" -> R.drawable.ic_103
+                    "롤링파스타" -> R.drawable.ic_104
+                    "맥도날드" -> R.drawable.ic_105
+                    "주다방" -> R.drawable.ic_106
+                    "롯데리아" -> R.drawable.ic_107
+                    "맘스터치" -> R.drawable.ic_108
+                    "한신포차" -> R.drawable.ic_109
+                    "쉑쉑버거" -> R.drawable.ic_110
+                    "FIVE GUYS" -> R.drawable.ic_111
+                    "1943" -> R.drawable.ic_112
+                    "에그드랍" -> R.drawable.ic_113
+                    "포차천국" -> R.drawable.ic_114
+                    "아비꼬" -> R.drawable.ic_115
+                    "쿠우쿠우" -> R.drawable.ic_116
+                    "경양카츠" -> R.drawable.ic_117
+                    "오유미당" -> R.drawable.ic_118
+                    "별밤" -> R.drawable.ic_119
+                    "BBQ" -> R.drawable.ic_120
+                    "노랑통닭" -> R.drawable.ic_121
+                    "처갓집양념치킨" -> R.drawable.ic_122
+                    "투다리" -> R.drawable.ic_123 // 1호선
+                    "굽네치킨" -> R.drawable.ic_201
+                    "가마치통닭" -> R.drawable.ic_202
+                    "멕시카나치킨" -> R.drawable.ic_203
+                    "범맥주" -> R.drawable.ic_204
+                    "네네치킨" -> R.drawable.ic_205
+                    "자담치킨" -> R.drawable.ic_206
+                    "호식이두마리치킨" -> R.drawable.ic_207
+                    "홍콩반점" -> R.drawable.ic_208
+                    "짬뽕지존" -> R.drawable.ic_209
+                    "반올림피자" -> R.drawable.ic_210
+                    "피자스쿨" -> R.drawable.ic_211
+                    "피자마루" -> R.drawable.ic_212
+                    "피자나라치킨공주" -> R.drawable.ic_213
+                    "피자헛" -> R.drawable.ic_214
+                    "도미노" -> R.drawable.ic_215
+                    "백종원의 빽보이피자" -> R.drawable.ic_216
+                    "파파존스" -> R.drawable.ic_217 // 2호선
+                    "피자알볼로" -> R.drawable.ic_301
+                    "미스터피자" -> R.drawable.ic_302
+                    "두찜" -> R.drawable.ic_303
+                    "한촌설렁탕" -> R.drawable.ic_304
+                    "금별맥주" -> R.drawable.ic_305
+                    "땅스부대찌개" -> R.drawable.ic_306
+                    "짚신매운갈비찜" -> R.drawable.ic_307
+                    "양평해장국" -> R.drawable.ic_308
+                    "응급실국물떡볶이" -> R.drawable.ic_401 //3호선
+                    "배떡" -> R.drawable.ic_402
+                    "청년다방" -> R.drawable.ic_403
+                    "스텔라떡볶이" -> R.drawable.ic_404
+                    "할리스" -> R.drawable.ic_405
+                    "신전떡볶이" -> R.drawable.ic_406
+                    "와플대학" -> R.drawable.ic_407
+                    "셍활맥주" -> R.drawable.ic_408
+                    "동대문엽기떡볶이" -> R.drawable.ic_409
+                    "서브웨이" -> R.drawable.ic_410
+                    "요거프레소" -> R.drawable.ic_411
+                    "이디야커피" -> R.drawable.ic_412
+                    "스타벅스" -> R.drawable.ic_413
+                    "용용선생" -> R.drawable.ic_414
+                    "메가커피" -> R.drawable.ic_415
+                    "파스쿠찌" -> R.drawable.ic_416
+                    "디저트39" -> R.drawable.ic_417 // 4호선
+                    "요거트 아이스크릠의 정석" -> R.drawable.ic_501
+                    "크라운호프" -> R.drawable.ic_502
+                    "뚜레쥬르" -> R.drawable.ic_503
+                    "파리바게트" -> R.drawable.ic_504
+                    "설빙" -> R.drawable.ic_505
+                    "김복남맥주" -> R.drawable.ic_506
+                    "달콤왕가탕후루" -> R.drawable.ic_507 // 5호선
+                    "배스킨라빈스" -> R.drawable.ic_601
+                    "메가박스" -> R.drawable.ic_602
+                    "롯데시네마" -> R.drawable.ic_603
+                    "뉴욕야시장" -> R.drawable.ic_604
+                    "홍루이젠" -> R.drawable.ic_605
+                    "poke all day" -> R.drawable.ic_606
+                    "노티드" -> R.drawable.ic_607
+                    "폴바셋" -> R.drawable.ic_608
+                    "샐러디" -> R.drawable.ic_609
+                    "봉구비어" -> R.drawable.ic_610
+                    "던킨" -> R.drawable.ic_611
+                    "더벤티" -> R.drawable.ic_612
+                    "크리스피크림도넛" -> R.drawable.ic_613
+                    "돈까스클럽" -> R.drawable.ic_614
+                    "토끼정" -> R.drawable.ic_615
+                    "벡소정" -> R.drawable.ic_616
+                    "한솥도시락" -> R.drawable.ic_617
+                    "얌샘김밥" -> R.drawable.ic_618
+                    "대한곱창" -> R.drawable.ic_619
+                    "탐라포차" -> R.drawable.ic_620
+                    "준코" -> R.drawable.ic_621 // 6호선
+                   // "김밥천국" -> R.drawable.ic_622
+                    "스시린" -> R.drawable.ic_701
+                    "서울주막" -> R.drawable.ic_702
+                    "원할머니보쌈족발" -> R.drawable.ic_703 // 6호선
+                    "원조부안집" -> R.drawable.ic_704
+                    "이차돌" -> R.drawable.ic_705
+                    "명륜진사갈비" -> R.drawable.ic_706
+                    "등촌칼국수" -> R.drawable.ic_707 // 7호선
+                    "노모어피자" -> R.drawable.ic_801
+                    "만만코코로" -> R.drawable.ic_802
+                    "족발야시장" -> R.drawable.ic_803
+                    "지금 보고싶다" -> R.drawable.ic_804
+                    "한신우동" -> R.drawable.ic_805
+                    "포메인" -> R.drawable.ic_806 // 8호선
+                    "수상한포차" -> R.drawable.ic_901
+                    "탐앤탐스" -> R.drawable.ic_902
+                    "치치" -> R.drawable.ic_903
+                    "엔젤리너스" -> R.drawable.ic_904 // 9호선
+
+
+
+                    else -> R.drawable.ic_restaurant
+                }
+                else -> R.drawable.ic_default // 기본 아이콘
             }
+
+            // 아이콘 설정
             holder.icon.setImageResource(iconRes)
         }
 
