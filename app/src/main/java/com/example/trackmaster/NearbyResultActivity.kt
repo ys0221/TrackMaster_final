@@ -265,7 +265,7 @@ class NearbySearchActivity : AppCompatActivity() {
 
 
 
-                    else -> R.drawable.ic_restaurant
+                    else -> R.drawable.ic_default
                 }
                 else -> R.drawable.ic_default // 기본 아이콘
             }
