@@ -4,11 +4,14 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
@@ -195,8 +198,6 @@ class ResultActivity : AppCompatActivity() {
             "9" to R.drawable.transfer9
         )
 
-        val departureImage = R.drawable.departure
-        val arrivalImage = R.drawable.arrival
         val lineColors = mapOf(
             "1" to "#00B050", "2" to "#002060", "3" to "#CB6A28",
             "4" to "#FF0000", "5" to "#7F9ED7", "6" to "#FFC000",
@@ -206,14 +207,13 @@ class ResultActivity : AppCompatActivity() {
         // 주요 경로 정보 출력
         val labelTextView = TextView(this).apply {
             text = """
-            $label: ${result.route.first()} -> ${result.route.last()}
-            소요 시간: ${result.times.sum()} 초
-            환승 횟수: ${result.totalTransfers}
-            이동 거리: ${result.distances.sum()} m
-            소요 비용: ${result.costs.sum()} 원
+        소요 시간: ${result.times.sum()} 분
+        환승 횟수: ${result.totalTransfers}
+        소요 비용: ${result.costs.sum()} 원
         """.trimIndent()
             setTextColor(Color.BLACK)
             textSize = 18f
+            textAlignment = TextView.TEXT_ALIGNMENT_CENTER // 텍스트를 중앙 정렬
         }
         resultLayout.removeAllViews()
         resultLayout.addView(labelTextView)
@@ -221,13 +221,6 @@ class ResultActivity : AppCompatActivity() {
         // 혼잡도 정보 출력
         val congestion = Congestion()
         val congestionInfo = congestion.calculateCongestion(result, congestionCache)
-        val congestionTextView = TextView(this).apply {
-            text = congestionInfo.joinToString("\n") // 혼잡도 정보를 줄바꿈하여 출력
-            setTextColor(Color.DKGRAY)
-            textSize = 16f
-            setPadding(16, 16, 16, 16)
-        }
-        resultLayout.addView(congestionTextView)
 
         // 상세 경로 레이아웃 생성
         val detailLayout = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
@@ -247,21 +240,34 @@ class ResultActivity : AppCompatActivity() {
             val stationLayout = LinearLayout(this).apply {
                 orientation = LinearLayout.HORIZONTAL
                 layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT, // 가로 크기를 wrap_content로 설정
                     LinearLayout.LayoutParams.WRAP_CONTENT
-                ).apply { setMargins(32, 32, 32, 32) }
+                ).apply {
+                    gravity = android.view.Gravity.CENTER_HORIZONTAL // 수평으로 가운데 정렬
+                    setMargins(32, 32, 32, 32)
+                }
+            }
+            // 혼잡도 상태에 따라 이미지 설정
+            val line = keyStations[i].substring(0, 1) // 호선 번호
+            val congestionImageRes = when (congestionInfo[line]) {
+                "혼잡" -> R.drawable.congested
+                "보통" -> R.drawable.moderate
+                "쾌적" -> R.drawable.comfortable
+                else -> R.drawable.ic_default
+            }
+
+            // 혼잡도 이미지 추가
+            val congestionImage = ImageView(this).apply {
+                setImageResource(congestionImageRes)
+                layoutParams = LinearLayout.LayoutParams(80, 80).apply { setMargins(16, 0, 16, 0) }
             }
 
             val stationImage = ImageView(this).apply {
-                setImageResource(
-                    when (i) {
-                        0 -> departureImage
-                        keyStations.size - 1 -> arrivalImage
-                        else -> lineImages[keyStations[i].substring(0, 1)] ?: R.drawable.transfer1
-                    }
-                )
+                // 항상 호선 이미지로 설정
+                setImageResource(lineImages[keyStations[i].substring(0, 1)] ?: R.drawable.transfer1)
                 layoutParams = LinearLayout.LayoutParams(150, 150).apply { setMargins(16, 0, 16, 0) }
             }
+
 
             val stationText = TextView(this).apply {
                 text = keyStations[i]
@@ -269,36 +275,56 @@ class ResultActivity : AppCompatActivity() {
                 textSize = 20f
             }
 
+            stationLayout.addView(congestionImage) // 혼잡도 이미지 추가
             stationLayout.addView(stationImage)
             stationLayout.addView(stationText)
             detailLayout.addView(stationLayout)
 
-            // 선과 "자세히 보기" 추가
+            // 선과 "자세히 보기"/번호 추가
             if (i < keyStations.size - 1) {
-                val lineAndButtonLayout = LinearLayout(this).apply {
-                    orientation = LinearLayout.HORIZONTAL
+                val lineAndButtonLayout = FrameLayout(this).apply {
                     layoutParams = LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT
-                    ).apply { setMargins(16, 16, 16, 16) }
+                    ).apply {
+                        setMargins(0, 16, 0, 16) // 전체 여백 설정
+                    }
                 }
 
-                val lineView = View(this).apply {
+                val frameLayout = FrameLayout(this).apply {
                     layoutParams = LinearLayout.LayoutParams(
-                        8, 300
-                    ).apply { setMargins(100, 0, 100, 0) }
-                    setBackgroundColor(Color.parseColor(lineColors[keyStations[i].substring(0, 1)] ?: "#CCCCCC"))
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    ).apply {
+                        setMargins(0, 16, 0, 16) // 여백 조정
+                    }
                 }
 
-                val buttonText = TextView(this).apply {
+                // "자세히 보기" 버튼을 외부에서 선언
+                val toggleButton = TextView(this).apply {
                     text = "자세히 보기"
                     setTextColor(Color.BLUE)
                     textSize = 18f
+                    layoutParams = FrameLayout.LayoutParams(
+                        FrameLayout.LayoutParams.WRAP_CONTENT,
+                        FrameLayout.LayoutParams.WRAP_CONTENT
+                    ).apply {
+                        gravity = android.view.Gravity.CENTER
+                        setMargins(160, 0, 0, 0)
+                    }
                 }
 
+                // 중간 역 리스트 추가
                 val stationListLayout = LinearLayout(this@ResultActivity).apply {
                     orientation = LinearLayout.VERTICAL
                     visibility = LinearLayout.GONE
+                    layoutParams = FrameLayout.LayoutParams(
+                        FrameLayout.LayoutParams.WRAP_CONTENT,
+                        FrameLayout.LayoutParams.WRAP_CONTENT
+                    ).apply {
+                        gravity = android.view.Gravity.CENTER // 동일한 정렬
+                        setMargins(160, 0, 0, 0) // 동일한 위치 설정
+                    }
                 }
 
                 val intermediateStations = result.route.subList(
@@ -306,35 +332,61 @@ class ResultActivity : AppCompatActivity() {
                     result.route.indexOf(keyStations[i + 1])
                 )
 
+                val defaultLineHeight = 100
+
+                val lineView = View(this).apply {
+                    layoutParams = FrameLayout.LayoutParams(
+                        8, defaultLineHeight
+                    ).apply {
+                        gravity = Gravity.CENTER_HORIZONTAL // 수평 가운데 정렬
+                        setMargins(-50, 0, 0, 0)
+                    }
+                    setBackgroundColor(Color.parseColor(lineColors[keyStations[i].substring(0, 1)] ?: "#CCCCCC"))
+                }
+
                 intermediateStations.forEach { station ->
                     val stationTextView = TextView(this@ResultActivity).apply {
                         text = station
-                        setTextColor(Color.GRAY)
+                        setTextColor(Color.parseColor(lineColors[station.substring(0, 1)] ?: "#000000"))
                         textSize = 16f
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { setMargins(0, 16, 0, 16) }
+
                         setOnClickListener {
-                            stationListLayout.visibility = LinearLayout.GONE
-                            buttonText.visibility = View.VISIBLE
+                            // 번호 클릭 시 다시 "자세히 보기"로 전환
+                            stationListLayout.visibility = View.GONE
+                            toggleButton.visibility = View.VISIBLE
+                            // 선 길이를 기본 높이로 복원
+                            lineView.layoutParams = (lineView.layoutParams as FrameLayout.LayoutParams).apply {
+                                height = defaultLineHeight
+                            }
+                            lineView.requestLayout() // 레이아웃 갱신
                         }
                     }
                     stationListLayout.addView(stationTextView)
                 }
-
-                buttonText.setOnClickListener {
-                    if (stationListLayout.visibility == LinearLayout.GONE) {
-                        stationListLayout.visibility = LinearLayout.VISIBLE
-                        buttonText.visibility = View.GONE
+                toggleButton.setOnClickListener {
+                    if (stationListLayout.visibility == View.GONE) {
+                        stationListLayout.visibility = View.VISIBLE
+                        toggleButton.visibility = View.GONE
                     }
+                    // 선 길이를 확장
+                    lineView.layoutParams = (lineView.layoutParams as FrameLayout.LayoutParams).apply {
+                        height = 100 * intermediateStations.size // 중간 역 개수에 비례해 선 길이 변경
+                    }
+                    lineView.requestLayout() // 레이아웃 갱신
                 }
 
-                lineAndButtonLayout.addView(lineView)
-                lineAndButtonLayout.addView(buttonText)
+                lineAndButtonLayout.addView(lineView) // 선 추가
+                lineAndButtonLayout.addView(stationListLayout) // 번호를 선 옆에 출력
+                lineAndButtonLayout.addView(toggleButton) // 역 리스트 추가
                 detailLayout.addView(lineAndButtonLayout)
-                detailLayout.addView(stationListLayout)
             }
         }
 
         resultLayout.addView(detailLayout)
     }
-
 
 }
