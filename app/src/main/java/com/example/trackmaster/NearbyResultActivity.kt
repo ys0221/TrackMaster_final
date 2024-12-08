@@ -36,6 +36,7 @@ class NearbySearchActivity : AppCompatActivity() {
         amenitiesRecyclerView.visibility = RecyclerView.GONE
         stationInfoTextView.text = "역 번호를 입력하세요."
 
+
         // 검색 버튼 클릭 리스너
         searchNearbyButton.setOnClickListener {
             val stationNumber = searchStationInput.text.toString().trim()
@@ -273,7 +274,6 @@ class NearbySearchActivity : AppCompatActivity() {
             // 아이콘 설정
             holder.icon.setImageResource(iconRes)
         }
-
 
         override fun getItemCount(): Int = amenities.size
     }

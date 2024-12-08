@@ -1,4 +1,5 @@
 package com.example.trackmaster
+
 class GraphBuilder {
 
     fun buildGraph(stationList: List<StationData>): Map<String, MutableList<Edge>> {
