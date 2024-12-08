@@ -1,10 +1,5 @@
 package com.example.trackmaster
 
-
-import android.content.Context
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
 import kotlin.random.Random
 
 class Congestion {
@@ -43,7 +38,6 @@ class Congestion {
             }
             lineCongestions.computeIfAbsent(lastLine) { mutableListOf() }.add(lastCongestion)
         }
-        // test1
         // 혼잡도 상태 반환
         return lineCongestions.entries.associate { entry ->
             val averageCongestion = entry.value.average().toInt()
