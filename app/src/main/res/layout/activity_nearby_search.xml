@@ -1,20 +1,41 @@
-<!-- activity_nearby_search.xml -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp">
 
+    <!-- 검색창 -->
     <EditText
-        android:id="@+id/stationNumberInput"
+        android:id="@+id/searchStationInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="역 번호 입력"
-        android:inputType="number" />
+        android:inputType="number"
+        android:padding="8dp" />
 
+    <!-- 검색 버튼 -->
     <Button
         android:id="@+id/searchNearbyButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="주변 검색" />
+        android:text="검색"
+        android:layout_gravity="end"
+        android:backgroundTint="#344485"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="8dp" />
+
+    <!-- 역 정보 텍스트 -->
+    <TextView
+        android:id="@+id/stationInfoTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:paddingTop="16dp"
+        android:text="검색 결과가 여기에 표시됩니다." />
+
+    <!-- 편의시설 목록 RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/amenitiesRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>

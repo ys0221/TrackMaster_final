@@ -1,3 +1,5 @@
+package com.example.trackmaster
+
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
@@ -46,7 +48,6 @@ class RouteFormatter(private val lineColors: Map<Int, String>) {
         )
     }
 }
-
 
 
 
