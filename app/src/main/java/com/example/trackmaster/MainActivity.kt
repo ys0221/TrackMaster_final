@@ -1,11 +1,11 @@
 package com.example.trackmaster
 
-import StationRepository
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,6 +23,10 @@ class MainActivity : AppCompatActivity() {
         val errorUtility = ErrorUtility()
 
         calculateButton.setOnClickListener {
+
+            startStationInput.error = null
+            endStationInput.error = null
+
             val startStation = startStationInput.text.toString().trim()
             val endStation = endStationInput.text.toString().trim()
 
@@ -69,6 +73,13 @@ class MainActivity : AppCompatActivity() {
             }
             startActivity(intent)
         }
+        // 텍스트 변경 시 오류 메시지 초기화
+        startStationInput.addTextChangedListener {
+            startStationInput.error = null
+        }
+
+        endStationInput.addTextChangedListener {
+            endStationInput.error = null
+        }
     }
 }
-
