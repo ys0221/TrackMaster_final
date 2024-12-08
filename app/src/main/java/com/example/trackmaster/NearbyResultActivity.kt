@@ -47,6 +47,7 @@ class NearbySearchActivity : AppCompatActivity() {
                 // 검색창이 비어 있을 때 처리
                 searchStationInput.error = "역 번호를 입력하세요."
                 clearAmenitiesList()
+                stationInfoTextView.text = "역 번호를 입력하세요."
             }
         }
 
@@ -67,6 +68,7 @@ class NearbySearchActivity : AppCompatActivity() {
             val searchStationInput = findViewById<EditText>(R.id.searchStationInput)
             searchStationInput.error = "역 이름이 올바르지 않습니다."
             amenitiesRecyclerView.visibility = RecyclerView.GONE
+            stationInfoTextView.text = "역 번호를 입력하세요."
         } else {
             // 오류 메시지 초기화
             val searchStationInput = findViewById<EditText>(R.id.searchStationInput)
