@@ -1,5 +1,5 @@
-import com.example.trackmaster.Edge
-import com.example.trackmaster.Path
+package com.example.trackmaster
+
 import java.util.PriorityQueue
 
 class PathFinder {

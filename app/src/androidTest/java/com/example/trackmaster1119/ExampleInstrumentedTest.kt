@@ -1,4 +1,4 @@
-package com.example.trackmaster1119
+package com.example.trackmaster
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
