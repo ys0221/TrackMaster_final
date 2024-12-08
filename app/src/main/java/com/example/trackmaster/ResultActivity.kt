@@ -3,12 +3,16 @@ package com.example.trackmaster
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
@@ -204,19 +208,55 @@ class ResultActivity : AppCompatActivity() {
         )
 
         // 주요 경로 정보 출력
-        val labelTextView = TextView(this).apply {
-            text = """
-            $label: ${result.route.first()} -> ${result.route.last()}
-            소요 시간: ${result.times.sum()} 초
-            환승 횟수: ${result.totalTransfers}
-            이동 거리: ${result.distances.sum()} m
-            소요 비용: ${result.costs.sum()} 원
-        """.trimIndent()
-            setTextColor(Color.BLACK)
-            textSize = 18f
+        // 주요 경로 정보 레이아웃 생성
+        val infoLayout = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_HORIZONTAL // 전체 레이아웃 중앙 정렬
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, // 레이아웃 크기를 텍스트 크기에 맞춤
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                setMargins(16, 16, 16, 8) // 여백 추가
+            }
         }
+
+// 소요시간 텍스트
+        val mainInfoTextView = TextView(this).apply {
+            text = "소요시간: ${result.times.sum() / 60}분 ${result.times.sum() % 60}초"
+            setTextColor(Color.BLACK)
+            textSize = 20f // 주요 정보의 크기를 크게 설정
+            typeface = Typeface.DEFAULT_BOLD
+            gravity = Gravity.CENTER_VERTICAL // 텍스트 수직 가운데 정렬
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+        }
+
+// 환승 및 비용 정보 텍스트
+        val additionalInfoTextView = TextView(this).apply {
+            text = "환승 ${result.totalTransfers}회 | 비용 ${result.costs.sum()}원"
+            setTextColor(Color.GRAY) // 보조 정보의 색상 설정
+            textSize = 14f // 보조 정보의 크기를 작게 설정
+            gravity = Gravity.CENTER_VERTICAL // 텍스트 수직 가운데 정렬
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                setMargins(16, 0, 0, 0) // 왼쪽 여백 추가
+            }
+        }
+
+// 두 텍스트를 수평 레이아웃에 추가
+        infoLayout.addView(mainInfoTextView)
+        infoLayout.addView(additionalInfoTextView)
+
+// 레이아웃에 추가
         resultLayout.removeAllViews()
-        resultLayout.addView(labelTextView)
+        resultLayout.addView(infoLayout)
+
+
+
 
         // 혼잡도 정보 출력
         val congestion = Congestion()
@@ -247,9 +287,12 @@ class ResultActivity : AppCompatActivity() {
             val stationLayout = LinearLayout(this).apply {
                 orientation = LinearLayout.HORIZONTAL
                 layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT, // 가로 크기를 wrap_content로 설정
                     LinearLayout.LayoutParams.WRAP_CONTENT
-                ).apply { setMargins(32, 32, 32, 32) }
+                ).apply {
+                    gravity = android.view.Gravity.CENTER_HORIZONTAL // 수평으로 가운데 정렬
+                    setMargins(32, 32, 32, 32)
+                }
             }
 
             val stationImage = ImageView(this).apply {
@@ -273,32 +316,51 @@ class ResultActivity : AppCompatActivity() {
             stationLayout.addView(stationText)
             detailLayout.addView(stationLayout)
 
-            // 선과 "자세히 보기" 추가
+            // 선과 "자세히 보기"/번호 추가
             if (i < keyStations.size - 1) {
-                val lineAndButtonLayout = LinearLayout(this).apply {
-                    orientation = LinearLayout.HORIZONTAL
+                val lineAndButtonLayout = FrameLayout(this).apply {
                     layoutParams = LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT
-                    ).apply { setMargins(16, 16, 16, 16) }
+                    ).apply {
+                        setMargins(0, 16, 0, 16) // 전체 여백 설정
+                    }
                 }
 
-                val lineView = View(this).apply {
+                val frameLayout = FrameLayout(this).apply {
                     layoutParams = LinearLayout.LayoutParams(
-                        8, 300
-                    ).apply { setMargins(100, 0, 100, 0) }
-                    setBackgroundColor(Color.parseColor(lineColors[keyStations[i].substring(0, 1)] ?: "#CCCCCC"))
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    ).apply {
+                        setMargins(0, 16, 0, 16) // 여백 조정
+                    }
                 }
 
-                val buttonText = TextView(this).apply {
+                // "자세히 보기" 버튼을 외부에서 선언
+                val toggleButton = TextView(this).apply {
                     text = "자세히 보기"
                     setTextColor(Color.BLUE)
                     textSize = 18f
+                    layoutParams = FrameLayout.LayoutParams(
+                        FrameLayout.LayoutParams.WRAP_CONTENT,
+                        FrameLayout.LayoutParams.WRAP_CONTENT
+                    ).apply {
+                        gravity = android.view.Gravity.CENTER
+                        setMargins(160, 0, 0, 0)
+                    }
                 }
 
+                // 중간 역 리스트 추가
                 val stationListLayout = LinearLayout(this@ResultActivity).apply {
                     orientation = LinearLayout.VERTICAL
                     visibility = LinearLayout.GONE
+                    layoutParams = FrameLayout.LayoutParams(
+                        FrameLayout.LayoutParams.WRAP_CONTENT,
+                        FrameLayout.LayoutParams.WRAP_CONTENT
+                    ).apply {
+                        gravity = android.view.Gravity.CENTER // 동일한 정렬
+                        setMargins(160, 0, 0, 0) // 동일한 위치 설정
+                    }
                 }
 
                 val intermediateStations = result.route.subList(
@@ -306,35 +368,61 @@ class ResultActivity : AppCompatActivity() {
                     result.route.indexOf(keyStations[i + 1])
                 )
 
+                val defaultLineHeight = 100
+
+                val lineView = View(this).apply {
+                    layoutParams = FrameLayout.LayoutParams(
+                        8, defaultLineHeight
+                    ).apply {
+                        gravity = Gravity.CENTER_HORIZONTAL // 수평 가운데 정렬
+                        setMargins(-50, 0, 0, 0)
+                    }
+                    setBackgroundColor(Color.parseColor(lineColors[keyStations[i].substring(0, 1)] ?: "#CCCCCC"))
+                }
+
                 intermediateStations.forEach { station ->
                     val stationTextView = TextView(this@ResultActivity).apply {
                         text = station
-                        setTextColor(Color.GRAY)
+                        setTextColor(Color.parseColor(lineColors[station.substring(0, 1)] ?: "#000000"))
                         textSize = 16f
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { setMargins(0, 16, 0, 16) }
+
                         setOnClickListener {
-                            stationListLayout.visibility = LinearLayout.GONE
-                            buttonText.visibility = View.VISIBLE
+                            // 번호 클릭 시 다시 "자세히 보기"로 전환
+                            stationListLayout.visibility = View.GONE
+                            toggleButton.visibility = View.VISIBLE
+                            // 선 길이를 기본 높이로 복원
+                            lineView.layoutParams = (lineView.layoutParams as FrameLayout.LayoutParams).apply {
+                                height = defaultLineHeight
+                            }
+                            lineView.requestLayout() // 레이아웃 갱신
                         }
                     }
                     stationListLayout.addView(stationTextView)
                 }
-
-                buttonText.setOnClickListener {
-                    if (stationListLayout.visibility == LinearLayout.GONE) {
-                        stationListLayout.visibility = LinearLayout.VISIBLE
-                        buttonText.visibility = View.GONE
+                toggleButton.setOnClickListener {
+                    if (stationListLayout.visibility == View.GONE) {
+                        stationListLayout.visibility = View.VISIBLE
+                        toggleButton.visibility = View.GONE
                     }
+                    // 선 길이를 확장
+                    lineView.layoutParams = (lineView.layoutParams as FrameLayout.LayoutParams).apply {
+                        height = 100 * intermediateStations.size // 중간 역 개수에 비례해 선 길이 변경
+                    }
+                    lineView.requestLayout() // 레이아웃 갱신
                 }
 
-                lineAndButtonLayout.addView(lineView)
-                lineAndButtonLayout.addView(buttonText)
+                lineAndButtonLayout.addView(lineView) // 선 추가
+                lineAndButtonLayout.addView(stationListLayout) // 번호를 선 옆에 출력
+                lineAndButtonLayout.addView(toggleButton) // 역 리스트 추가
                 detailLayout.addView(lineAndButtonLayout)
-                detailLayout.addView(stationListLayout)
             }
         }
 
         resultLayout.addView(detailLayout)
     }
-
 
 }
