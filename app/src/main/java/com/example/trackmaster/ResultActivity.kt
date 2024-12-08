@@ -328,7 +328,11 @@ class ResultActivity : AppCompatActivity() {
 
             val stationText = TextView(this).apply {
                 text = keyStations[i]
-                setTextColor(Color.parseColor(lineColors[keyStations[i].substring(0, 1)] ?: "#000000"))
+                setTextColor(
+                    Color.parseColor(
+                        lineColors[keyStations[i].substring(0, 1)] ?: "#000000"
+                    )
+                )
                 textSize = 20f
             }
 
@@ -341,7 +345,7 @@ class ResultActivity : AppCompatActivity() {
                     result.route.indexOf(keyStations[i]) + 1,
                     result.route.indexOf(keyStations[i + 1])
                 )
-                
+
                 val lineAndButtonLayout = FrameLayout(this).apply {
                     layoutParams = LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
@@ -352,7 +356,7 @@ class ResultActivity : AppCompatActivity() {
                 }
 
                 val defaultLineHeight = 100
-                    
+
                 val lineView = View(this).apply {
                     layoutParams = FrameLayout.LayoutParams(
                         8, defaultLineHeight
@@ -395,7 +399,11 @@ class ResultActivity : AppCompatActivity() {
                     intermediateStations.forEach { station ->
                         val stationTextView = TextView(this).apply {
                             text = station
-                            setTextColor(Color.parseColor(lineColors[station.substring(0, 1)] ?: "#000000"))
+                            setTextColor(
+                                Color.parseColor(
+                                    lineColors[station.substring(0, 1)] ?: "#000000"
+                                )
+                            )
                             textSize = 16f
                             layoutParams = LinearLayout.LayoutParams(
                                 LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -404,9 +412,10 @@ class ResultActivity : AppCompatActivity() {
                             setOnClickListener {
                                 stationListLayout.visibility = View.GONE
                                 toggleButton.visibility = View.VISIBLE
-                                lineView.layoutParams = (lineView.layoutParams as FrameLayout.LayoutParams).apply {
-                                    height = defaultLineHeight
-                                }
+                                lineView.layoutParams =
+                                    (lineView.layoutParams as FrameLayout.LayoutParams).apply {
+                                        height = defaultLineHeight
+                                    }
                                 lineView.requestLayout()
                             }
                         }
@@ -419,9 +428,10 @@ class ResultActivity : AppCompatActivity() {
                             stationListLayout.visibility = View.VISIBLE
                             toggleButton.visibility = View.GONE
                         }
-                        lineView.layoutParams = (lineView.layoutParams as FrameLayout.LayoutParams).apply {
-                            height = 100 * intermediateStations.size
-                        }
+                        lineView.layoutParams =
+                            (lineView.layoutParams as FrameLayout.LayoutParams).apply {
+                                height = 100 * intermediateStations.size
+                            }
                         lineView.requestLayout()
                     }
 
@@ -435,4 +445,5 @@ class ResultActivity : AppCompatActivity() {
         }
         resultLayout.addView(detailLayout)
     }
+}
 
