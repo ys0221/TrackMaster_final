@@ -148,7 +148,7 @@ class NearbySearchActivity : AppCompatActivity() {
                     "CU" -> R.drawable.ic_cu
                     "세븐일레븐" -> R.drawable.ic_7eleven
                     "이마트24" -> R.drawable.ic_emart24
-                    else -> R.drawable.ic_convenience_store
+                    else -> R.drawable.ic_default
                 }
                 "식당" -> when (amenity.name) {
                     "아레나" -> R.drawable.ic_101
