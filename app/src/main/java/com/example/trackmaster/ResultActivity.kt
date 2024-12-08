@@ -263,37 +263,45 @@ class ResultActivity : AppCompatActivity() {
                 }
             }
             // 혼잡도 상태에 따라 이미지 설정
-            val line = keyStations[i].substring(0, 1) // 호선 번호
-            val congestionImageRes = when (congestionInfo[line]) {
-                "혼잡" -> R.drawable.congested
-                "보통" -> R.drawable.moderate
-                "쾌적" -> R.drawable.comfortable
-                else -> R.drawable.ic_default
+            val line = keyStations[i].substring(0, 1) // 현재 역의 호선 번호
+
+// 이전 역과의 호선 비교를 위한 조건 추가
+            val isFirstInLine = i == 0 || keyStations[i - 1].substring(0, 1) != line
+
+// 혼잡도 이미지는 같은 호선의 첫 번째 역에만 추가
+            if (isFirstInLine) {
+                val congestionImageRes = when (congestionInfo[line]) {
+                    "혼잡" -> R.drawable.congested
+                    "보통" -> R.drawable.moderate
+                    "쾌적" -> R.drawable.comfortable
+                    else -> R.drawable.ic_default
+                }
+
+                val congestionImage = ImageView(this).apply {
+                    setImageResource(congestionImageRes)
+                    layoutParams = LinearLayout.LayoutParams(80, 80).apply { setMargins(16, 0, 16, 0) }
+                }
+
+                stationLayout.addView(congestionImage) // 혼잡도 이미지를 레이아웃에 추가
             }
 
-            // 혼잡도 이미지 추가
-            val congestionImage = ImageView(this).apply {
-                setImageResource(congestionImageRes)
-                layoutParams = LinearLayout.LayoutParams(80, 80).apply { setMargins(16, 0, 16, 0) }
-            }
-
+// 역 이미지는 항상 추가
             val stationImage = ImageView(this).apply {
-                // 항상 호선 이미지로 설정
                 setImageResource(lineImages[keyStations[i].substring(0, 1)] ?: R.drawable.transfer1)
                 layoutParams = LinearLayout.LayoutParams(150, 150).apply { setMargins(16, 0, 16, 0) }
             }
 
-
+// 역 이름 텍스트뷰 추가
             val stationText = TextView(this).apply {
                 text = keyStations[i]
                 setTextColor(Color.parseColor(lineColors[keyStations[i].substring(0, 1)] ?: "#000000"))
                 textSize = 20f
             }
 
-            stationLayout.addView(congestionImage) // 혼잡도 이미지 추가
-            stationLayout.addView(stationImage)
-            stationLayout.addView(stationText)
-            detailLayout.addView(stationLayout)
+            stationLayout.addView(stationImage) // 역 이미지를 레이아웃에 추가
+            stationLayout.addView(stationText)  // 역 이름 텍스트를 레이아웃에 추가
+            detailLayout.addView(stationLayout) // 레이아웃을 부모 레이아웃에 추가
+
 
             // 선과 "자세히 보기"/번호 추가
             if (i < keyStations.size - 1) {
