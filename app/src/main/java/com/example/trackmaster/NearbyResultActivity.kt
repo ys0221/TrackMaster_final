@@ -36,7 +36,6 @@ class NearbySearchActivity : AppCompatActivity() {
         amenitiesRecyclerView.visibility = RecyclerView.GONE
         stationInfoTextView.text = "역 번호를 입력하세요."
 
-
         // 검색 버튼 클릭 리스너
         searchNearbyButton.setOnClickListener {
             val stationNumber = searchStationInput.text.toString().trim()
@@ -245,7 +244,7 @@ class NearbySearchActivity : AppCompatActivity() {
                     "대한곱창" -> R.drawable.ic_619
                     "탐라포차" -> R.drawable.ic_620
                     "준코" -> R.drawable.ic_621 // 6호선
-                   // "김밥천국" -> R.drawable.ic_622
+                    // "김밥천국" -> R.drawable.ic_622
                     "스시린" -> R.drawable.ic_701
                     "서울주막" -> R.drawable.ic_702
                     "원할머니보쌈족발" -> R.drawable.ic_703 // 6호선
@@ -275,11 +274,7 @@ class NearbySearchActivity : AppCompatActivity() {
             holder.icon.setImageResource(iconRes)
         }
 
+
         override fun getItemCount(): Int = amenities.size
     }
 }
-
-
-
-
-
