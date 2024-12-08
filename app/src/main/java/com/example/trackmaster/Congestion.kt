@@ -43,7 +43,7 @@ class Congestion {
             }
             lineCongestions.computeIfAbsent(lastLine) { mutableListOf() }.add(lastCongestion)
         }
-
+        // test1
         // 혼잡도 상태 반환
         return lineCongestions.entries.associate { entry ->
             val averageCongestion = entry.value.average().toInt()
