@@ -341,7 +341,7 @@ class ResultActivity : AppCompatActivity() {
                     result.route.indexOf(keyStations[i]) + 1,
                     result.route.indexOf(keyStations[i + 1])
                 )
-
+                
                 val lineAndButtonLayout = FrameLayout(this).apply {
                     layoutParams = LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
@@ -352,6 +352,7 @@ class ResultActivity : AppCompatActivity() {
                 }
 
                 val defaultLineHeight = 100
+                    
                 val lineView = View(this).apply {
                     layoutParams = FrameLayout.LayoutParams(
                         8, defaultLineHeight
@@ -410,6 +411,7 @@ class ResultActivity : AppCompatActivity() {
                             }
                         }
                         stationListLayout.addView(stationTextView)
+
                     }
 
                     toggleButton.setOnClickListener {
@@ -423,17 +425,14 @@ class ResultActivity : AppCompatActivity() {
                         lineView.requestLayout()
                     }
 
+
                     lineAndButtonLayout.addView(stationListLayout)
                     lineAndButtonLayout.addView(toggleButton)
                 }
+
                 detailLayout.addView(lineAndButtonLayout)
             }
         }
         resultLayout.addView(detailLayout)
     }
-
-
-
-
-}
 
