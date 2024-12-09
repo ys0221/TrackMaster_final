@@ -217,7 +217,7 @@ class ResultActivity : AppCompatActivity() {
             }
         }
 
-        // 소요시간 텍스트 계산
+        // 소요시간 텍스트
         val totalSeconds = result.times.sum()
         val hours = totalSeconds / 3600 // 3600초 단위로 시간 계산
         val minutes = (totalSeconds % 3600) / 60 // 3600으로 나눈 나머지에서 분 계산
